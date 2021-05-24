@@ -1,2 +1,2 @@
 def lambda_handler(event, context):
-    return 'OK'
+    return 'OK, terraform'
