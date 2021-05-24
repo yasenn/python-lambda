@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo build started on `date`
+      - mkdir build && mv src build
+      - pipenv lock -r >requirements.txt
+      - pipenv run pip install -r requirements.txt -t build/site-packages
+      - |
+        cat <<EOF >build/lambda_function.py
+        __import__('sys').path.insert(1, '/var/task/site-packages')
+        from src.lambda_function import lambda_handler
+        EOF
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: build
